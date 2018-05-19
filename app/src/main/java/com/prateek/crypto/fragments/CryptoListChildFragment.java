@@ -6,15 +6,22 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,9 +34,9 @@ import com.prateek.crypto.network.NetworkClient;
 import com.prateek.crypto.network.NetworkService;
 import com.prateek.crypto.prefrences.UserPrefrenceManager;
 import com.prateek.crypto.utilities.CoinListSingleton;
+import com.prateek.crypto.utilities.MyFilter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Set;
 
 import retrofit2.Call;
@@ -46,6 +53,7 @@ public class CryptoListChildFragment extends Fragment {
     private NetworkService retrofit;
     private ArrayList<Coin> coinList;
     private FrameLayout root;
+    private Toolbar toolbar;
 
     public CryptoListChildFragment(){
 
@@ -66,19 +74,23 @@ public class CryptoListChildFragment extends Fragment {
         setList();
         mProgressBar = view.findViewById(R.id.progress_bar_coins);
         root = view.findViewById(R.id.main_view);
+        toolbar = (Toolbar) getActivity().findViewById(R.id.my_toolbar);
+        setHasOptionsMenu(true);
         return view;
     }
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getContext()!= null) {
-            setList();
+            if(mAdapter!=null)
+                mAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         retrofit = NetworkClient.getClient().create(NetworkService.class);
         if(CoinListSingleton.getInstance().getList().size()==0){
             networkCall();
@@ -90,6 +102,27 @@ public class CryptoListChildFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate( R.menu.search_bar, menu);
+
+        MenuItem myActionMenuItem = menu.findItem( R.id.search);
+        final SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+    }
+
     private void networkCall() {
         Call<CoinListResponse> call = retrofit.getAllCoinList();
         call.enqueue(new Callback<CoinListResponse>() {
@@ -98,7 +131,7 @@ public class CryptoListChildFragment extends Fragment {
                 mProgressBar.setVisibility(View.INVISIBLE);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 CoinListResponse coinListResponse = response.body();
-                coinList = coinListResponse.getData().getCoinsList();
+                coinList = coinListResponse.getCoinsList();
                 setList();
             }
 
@@ -130,21 +163,43 @@ public class CryptoListChildFragment extends Fragment {
     }
 
     private class CoinHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
+        private TextView rankText;
+        private TextView coinText;
+        private TextView marketText;
+        private TextView volumeText;
+        private TextView change1Text;
+        private TextView change24Text;
+        private TextView change7Text;
         private ToggleButton button;
         private Coin mCoin;
         private Set<String> set;
 
         public CoinHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_coin, parent, false));
-            textView = itemView.findViewById(R.id.text_view);
             button = itemView.findViewById(R.id.myToggleButton);
+            rankText = itemView.findViewById(R.id.text_view);
+            coinText=itemView.findViewById(R.id.coinName);
+            marketText = itemView.findViewById(R.id.marketCap);
+            volumeText=itemView.findViewById(R.id.volume24);
+            change1Text = itemView.findViewById(R.id.change1);
+            change7Text=itemView.findViewById(R.id.change7);
+            change24Text = itemView.findViewById(R.id.change24);
+
+
+
+
         }
 
         public void bind(Coin coin, int pos) {
             set = UserPrefrenceManager.getFavourite(getContext());
             mCoin = coin;
-            textView.setText(mCoin.getCoinName());
+            rankText.setText(coin.getRank());
+            coinText.setText(mCoin.getName());
+            marketText.setText("MarketCap: $ "+mCoin.getMarketCapUsd());
+            volumeText.setText("Volume 24h: $ "+mCoin.get24hVolumeUsd());
+            change1Text.setText("1h "+mCoin.getPercentChange1h());
+            change24Text.setText("24h "+mCoin.getPercentChange24h());
+            change7Text.setText("7d "+mCoin.getPercentChange7d());
             button.setTag(pos);
             if (set.contains(mCoin.getId())) {
                 button.setChecked(true);
@@ -154,9 +209,10 @@ public class CryptoListChildFragment extends Fragment {
         }
     }
 
-    private class CoinAdapter extends RecyclerView.Adapter<CoinHolder> {
+    public class CoinAdapter extends RecyclerView.Adapter<CoinHolder> implements Filterable {
         private Set<String> set;
-        private ArrayList<Coin> mCoins;
+        public ArrayList<Coin> mCoins;
+        private MyFilter filter;
 
         public CoinAdapter(ArrayList<Coin> coins) {
             this.mCoins=coins;
@@ -199,6 +255,14 @@ public class CryptoListChildFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCoins.size();
+        }
+
+        @Override
+        public Filter getFilter() {
+            if (filter == null) {
+                filter = new MyFilter(this, mCoins);
+            }
+            return filter;
         }
     }
 }

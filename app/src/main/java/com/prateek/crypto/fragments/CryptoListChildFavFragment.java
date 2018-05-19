@@ -64,6 +64,7 @@ public class CryptoListChildFavFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_crypto_list_child_fav, container, false);
         mRecyclerView = view.findViewById(R.id.coin_list);
         coinList=new ArrayList<Coin>();
+        coinListFav=new ArrayList<Coin>();
         setList();
         mProgressBar = view.findViewById(R.id.progress_bar_coins);
         root = view.findViewById(R.id.main_view);
@@ -74,7 +75,11 @@ public class CryptoListChildFavFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser &&  getContext()!= null) {
-            setList();
+            if(mAdapter!=null){
+               setFavList();
+               mAdapter.setList(coinListFav);
+            }
+
         }
     }
 
@@ -86,8 +91,9 @@ public class CryptoListChildFavFragment extends Fragment {
             networkCall();
         }
         else{
-            coinList=  CoinListSingleton.getInstance().getList();
-            setList();
+            coinList=CoinListSingleton.getInstance().getList();
+            setFavList();
+            mAdapter.setList(coinListFav);
         }
 
 
@@ -101,14 +107,16 @@ public class CryptoListChildFavFragment extends Fragment {
                 mProgressBar.setVisibility(View.INVISIBLE);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 CoinListResponse coinListResponse = response.body();
-                coinList = coinListResponse.getData().getCoinsList();
-                setList();
+                coinList = coinListResponse.getCoinsList();
+                setFavList();
+                mAdapter.setList(coinListFav);
             }
 
             @Override
             public void onFailure(Call<CoinListResponse> call, Throwable t) {
+                Log.e("HERE",call.toString()+t.toString());
                 mProgressBar.setVisibility(View.INVISIBLE);
-                Snackbar snackbar = Snackbar.make(root, "Network Error", Snackbar.LENGTH_INDEFINITE)
+                Snackbar snackbar = Snackbar.make(root, "Network Error", Snackbar.LENGTH_SHORT)
                         .setAction("RELOAD", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -123,7 +131,7 @@ public class CryptoListChildFavFragment extends Fragment {
 
     }
 
-    private void setList() {
+    private void setFavList(){
         Set<String> set= UserPrefrenceManager.getFavourite(getContext());
         coinListFav=new ArrayList<>();
         for(Coin coin:coinList){
@@ -132,6 +140,9 @@ public class CryptoListChildFavFragment extends Fragment {
             }
         }
 
+    }
+
+    private void setList() {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -141,21 +152,41 @@ public class CryptoListChildFavFragment extends Fragment {
     }
 
     private class CoinHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
+
         private ToggleButton button;
         private Coin mCoin;
         private Set<String> set;
+        private TextView rankText;
+        private TextView coinText;
+        private TextView marketText;
+        private TextView volumeText;
+        private TextView change1Text;
+        private TextView change24Text;
+        private TextView change7Text;
 
         public CoinHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_coin, parent, false));
-            textView = itemView.findViewById(R.id.text_view);
             button = itemView.findViewById(R.id.myToggleButton);
+            rankText = itemView.findViewById(R.id.text_view);
+            coinText=itemView.findViewById(R.id.coinName);
+            marketText = itemView.findViewById(R.id.marketCap);
+            volumeText=itemView.findViewById(R.id.volume24);
+            change1Text = itemView.findViewById(R.id.change1);
+            change7Text=itemView.findViewById(R.id.change7);
+            change24Text = itemView.findViewById(R.id.change24);
         }
 
         public void bind(Coin coin, int pos) {
+            button.setBackgroundResource(R.drawable.ic_baseline_delete_24px);
             set = UserPrefrenceManager.getFavourite(getContext());
             mCoin = coin;
-            textView.setText(mCoin.getCoinName());
+            rankText.setText(coin.getRank());
+            coinText.setText(mCoin.getName());
+            marketText.setText("MarketCap: $ "+mCoin.getMarketCapUsd());
+            volumeText.setText("Volume 24h: $ "+mCoin.get24hVolumeUsd());
+            change1Text.setText("1h "+mCoin.getPercentChange1h());
+            change24Text.setText("24h "+mCoin.getPercentChange24h());
+            change7Text.setText("7d "+mCoin.getPercentChange7d());
             button.setTag(pos);
             if (set.contains(mCoin.getId())) {
                 button.setChecked(true);
@@ -165,9 +196,9 @@ public class CryptoListChildFavFragment extends Fragment {
         }
     }
 
-    private class CoinAdapter extends RecyclerView.Adapter<CoinHolder> {
+    public class CoinAdapter extends RecyclerView.Adapter<CoinHolder>  {
         private Set<String> set;
-        private ArrayList<Coin> mCoins;
+        public ArrayList<Coin> mCoins;
 
         public CoinAdapter(ArrayList<Coin> coins) {
             mCoins = coins;
@@ -178,7 +209,9 @@ public class CryptoListChildFavFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 set = UserPrefrenceManager.getFavourite(getContext());
-                int pos = (int) buttonView.getTag();
+
+                    int pos = (int) buttonView.getTag();
+                    Log.e("HERE",pos+"");
                     UserPrefrenceManager.removeFavourite(getContext(), mCoins.get(pos).getId());
                     mCoins.remove(mCoins.get(pos));
                     notifyDataSetChanged();
@@ -203,6 +236,11 @@ public class CryptoListChildFavFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCoins.size();
+        }
+
+        public void setList(ArrayList<Coin> coins){
+            this.mCoins=coins;
+            notifyDataSetChanged();
         }
     }
 
