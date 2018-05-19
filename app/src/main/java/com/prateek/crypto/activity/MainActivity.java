@@ -31,10 +31,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"2nd",Toast.LENGTH_SHORT).show();
                     Log.e("HERE", UserPrefrenceManager.getFavourite(MainActivity.this).toString());
                     return true;
-                case R.id.navigation_notifications:
-                    Toast.makeText(MainActivity.this,"2nd",Toast.LENGTH_SHORT).show();
-
-                    return true;
             }
             return false;
         }

@@ -1,87 +1,56 @@
-
 package com.prateek.crypto.models;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+@JsonAdapter(CoinListResponse.DataJsonAdapter.class)
 public class CoinListResponse {
 
-    @SerializedName("Response")
-    @Expose
-    private String response;
-    @SerializedName("Message")
-    @Expose
-    private String message;
-    @SerializedName("BaseImageUrl")
-    @Expose
-    private String baseImageUrl;
-    @SerializedName("BaseLinkUrl")
-    @Expose
-    private String baseLinkUrl;
-    @SerializedName("DefaultWatchlist")
-    @Expose
-    private DefaultWatchlist defaultWatchlist;
-    @SerializedName("Data")
-    @Expose
-    private Data data;
-    @SerializedName("Type")
-    @Expose
-    private Integer type;
+    private ArrayList<Coin> coinsList=new ArrayList<>();
 
-    public String getResponse() {
-        return response;
+    public ArrayList<Coin> getCoinsList(){
+        return coinsList;
+
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setCoinsList(ArrayList coinsList1) {
+        this.coinsList=coinsList1;
     }
 
-    public String getMessage() {
-        return message;
-    }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
-    public String getBaseImageUrl() {
-        return baseImageUrl;
-    }
 
-    public void setBaseImageUrl(String baseImageUrl) {
-        this.baseImageUrl = baseImageUrl;
-    }
+    public static class DataJsonAdapter extends TypeAdapter<CoinListResponse> {
 
-    public String getBaseLinkUrl() {
-        return baseLinkUrl;
-    }
+        @Override
+        public void write(JsonWriter out, CoinListResponse value) throws IOException {
+            // TODO: Maybe implement
+        }
 
-    public void setBaseLinkUrl(String baseLinkUrl) {
-        this.baseLinkUrl = baseLinkUrl;
-    }
+        @Override
+        public CoinListResponse read(JsonReader reader) throws IOException {
+            Gson gson = new Gson();
 
-    public DefaultWatchlist getDefaultWatchlist() {
-        return defaultWatchlist;
-    }
+            Type listType = new TypeToken<List<Coin>>(){}.getType();
+            ArrayList<Coin> posts = gson.fromJson(reader, listType);
 
-    public void setDefaultWatchlist(DefaultWatchlist defaultWatchlist) {
-        this.defaultWatchlist = defaultWatchlist;
-    }
+            CoinListResponse data = new CoinListResponse();
+            // Can probably be simplified
+            data.setCoinsList(posts);
 
-    public Data getData() {
-        return data;
-    }
 
-    public void setData(Data data) {
-        this.data = data;
+            return data;
+        }
     }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
 }

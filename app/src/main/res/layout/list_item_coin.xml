@@ -1,9 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:layout_height="wrap_content">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout_editor_absoluteY="25dp">
+
+
     <TextView
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:text="1000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/marketCap"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ToggleButton
+        android:id="@+id/myToggleButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/fav_button_selector"
+        android:checked="false"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/coinName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="8dp"
+        android:text="Bitcoin(BTC)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/marketCap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="MarketCap: $ 142,471,173,190.00"
+        app:layout_constraintStart_toStartOf="@+id/coinName"
+        app:layout_constraintTop_toBottomOf="@+id/coinName" />
+
+    <TextView
+        android:id="@+id/volume24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Volume 24h: $ 6,251,970,000.00"
+        app:layout_constraintStart_toStartOf="@+id/marketCap"
+        app:layout_constraintTop_toBottomOf="@+id/marketCap" />
+
+    <TextView
+        android:id="@+id/change1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="8dp"
+        android:text="1h -.22%"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/volume24"
+        app:layout_constraintTop_toBottomOf="@+id/volume24" />
+
+    <TextView
+        android:id="@+id/change24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="24h +1.31%"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/change1"
+        app:layout_constraintTop_toBottomOf="@+id/volume24" />
+
+    <TextView
+        android:id="@+id/change7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="7d -10.55%"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/change24"
+        app:layout_constraintTop_toBottomOf="@+id/volume24" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="113dp"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
+
+
+<!--
+
+
+ <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_view" />
@@ -18,4 +127,4 @@
         android:textOn=""
         android:textOff=""/>
 
-</LinearLayout>
+-->

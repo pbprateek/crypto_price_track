@@ -1,4 +1,3 @@
-
 package com.prateek.crypto.models;
 
 import com.google.gson.annotations.Expose;
@@ -6,54 +5,51 @@ import com.google.gson.annotations.SerializedName;
 
 public class Coin {
 
-    @SerializedName("Id")
+    @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("Url")
-    @Expose
-    private String url;
-    @SerializedName("ImageUrl")
-    @Expose
-    private String imageUrl;
-    @SerializedName("Name")
+    @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("Symbol")
+    @SerializedName("symbol")
     @Expose
     private String symbol;
-    @SerializedName("CoinName")
+    @SerializedName("rank")
     @Expose
-    private String coinName;
-    @SerializedName("FullName")
+    private String rank;
+    @SerializedName("price_usd")
     @Expose
-    private String fullName;
-    @SerializedName("Algorithm")
+    private Object priceUsd;
+    @SerializedName("price_btc")
     @Expose
-    private String algorithm;
-    @SerializedName("ProofType")
+    private Object priceBtc;
+    @SerializedName("24h_volume_usd")
     @Expose
-    private String proofType;
-    @SerializedName("FullyPremined")
+    private Object _24hVolumeUsd;
+    @SerializedName("market_cap_usd")
     @Expose
-    private String fullyPremined;
-    @SerializedName("TotalCoinSupply")
+    private Object marketCapUsd;
+    @SerializedName("available_supply")
     @Expose
-    private String totalCoinSupply;
-    @SerializedName("PreMinedValue")
+    private String availableSupply;
+    @SerializedName("total_supply")
     @Expose
-    private String preMinedValue;
-    @SerializedName("TotalCoinsFreeFloat")
+    private String totalSupply;
+    @SerializedName("max_supply")
     @Expose
-    private String totalCoinsFreeFloat;
-    @SerializedName("SortOrder")
+    private Object maxSupply;
+    @SerializedName("percent_change_1h")
     @Expose
-    private String sortOrder;
-    @SerializedName("Sponsored")
+    private Object percentChange1h;
+    @SerializedName("percent_change_24h")
     @Expose
-    private Boolean sponsored;
-    @SerializedName("IsTrading")
+    private Object percentChange24h;
+    @SerializedName("percent_change_7d")
     @Expose
-    private Boolean isTrading;
+    private Object percentChange7d;
+    @SerializedName("last_updated")
+    @Expose
+    private Object lastUpdated;
 
     public String getId() {
         return id;
@@ -61,22 +57,6 @@ public class Coin {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -95,92 +75,100 @@ public class Coin {
         this.symbol = symbol;
     }
 
-    public String getCoinName() {
-        return coinName;
+    public String getRank() {
+        return rank;
     }
 
-    public void setCoinName(String coinName) {
-        this.coinName = coinName;
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
-    public String getFullName() {
-        return fullName;
+    public Object getPriceUsd() {
+        return priceUsd;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setPriceUsd(Object priceUsd) {
+        this.priceUsd = priceUsd;
     }
 
-    public String getAlgorithm() {
-        return algorithm;
+    public Object getPriceBtc() {
+        return priceBtc;
     }
 
-    public void setAlgorithm(String algorithm) {
-        this.algorithm = algorithm;
+    public void setPriceBtc(Object priceBtc) {
+        this.priceBtc = priceBtc;
     }
 
-    public String getProofType() {
-        return proofType;
+    public Object get24hVolumeUsd() {
+        return _24hVolumeUsd;
     }
 
-    public void setProofType(String proofType) {
-        this.proofType = proofType;
+    public void set24hVolumeUsd(Object _24hVolumeUsd) {
+        this._24hVolumeUsd = _24hVolumeUsd;
     }
 
-    public String getFullyPremined() {
-        return fullyPremined;
+    public Object getMarketCapUsd() {
+        return marketCapUsd;
     }
 
-    public void setFullyPremined(String fullyPremined) {
-        this.fullyPremined = fullyPremined;
+    public void setMarketCapUsd(Object marketCapUsd) {
+        this.marketCapUsd = marketCapUsd;
     }
 
-    public String getTotalCoinSupply() {
-        return totalCoinSupply;
+    public String getAvailableSupply() {
+        return availableSupply;
     }
 
-    public void setTotalCoinSupply(String totalCoinSupply) {
-        this.totalCoinSupply = totalCoinSupply;
+    public void setAvailableSupply(String availableSupply) {
+        this.availableSupply = availableSupply;
     }
 
-    public String getPreMinedValue() {
-        return preMinedValue;
+    public String getTotalSupply() {
+        return totalSupply;
     }
 
-    public void setPreMinedValue(String preMinedValue) {
-        this.preMinedValue = preMinedValue;
+    public void setTotalSupply(String totalSupply) {
+        this.totalSupply = totalSupply;
     }
 
-    public String getTotalCoinsFreeFloat() {
-        return totalCoinsFreeFloat;
+    public Object getMaxSupply() {
+        return maxSupply;
     }
 
-    public void setTotalCoinsFreeFloat(String totalCoinsFreeFloat) {
-        this.totalCoinsFreeFloat = totalCoinsFreeFloat;
+    public void setMaxSupply(Object maxSupply) {
+        this.maxSupply = maxSupply;
     }
 
-    public String getSortOrder() {
-        return sortOrder;
+    public Object getPercentChange1h() {
+        return percentChange1h;
     }
 
-    public void setSortOrder(String sortOrder) {
-        this.sortOrder = sortOrder;
+    public void setPercentChange1h(Object percentChange1h) {
+        this.percentChange1h = percentChange1h;
     }
 
-    public Boolean getSponsored() {
-        return sponsored;
+    public Object getPercentChange24h() {
+        return percentChange24h;
     }
 
-    public void setSponsored(Boolean sponsored) {
-        this.sponsored = sponsored;
+    public void setPercentChange24h(Object percentChange24h) {
+        this.percentChange24h = percentChange24h;
     }
 
-    public Boolean getIsTrading() {
-        return isTrading;
+    public Object getPercentChange7d() {
+        return percentChange7d;
     }
 
-    public void setIsTrading(Boolean isTrading) {
-        this.isTrading = isTrading;
+    public void setPercentChange7d(Object percentChange7d) {
+        this.percentChange7d = percentChange7d;
+    }
+
+    public Object getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Object lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
 }
