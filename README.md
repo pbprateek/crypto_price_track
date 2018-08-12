@@ -17,6 +17,6 @@ This is the full code for 'crypto_price_track'.In this code we use Coinmarketcap
 ## Video
 <div align = 'center'>
      <a href = 'https://www.youtube.com/watch?v=i2D-BFastmw'>
-        <img src = 'ScreenShots/photo_2018-08-12_20-47-28.jpg ' alt = 'Click to go to YouTube!' width = '800px' height = '400px'>
+        <img src = 'ScreenShots/photo_2018-08-12_20-47-28.jpg ' alt = 'Click to go to YouTube!' height = '400px'>
      </a>
 </div>
