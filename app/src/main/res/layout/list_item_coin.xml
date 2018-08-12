@@ -11,7 +11,7 @@
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="26dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:text="1000"
         android:textSize="16sp"
@@ -27,7 +27,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/fav_button_selector"
         android:checked="false"
         android:textOff=""
@@ -51,8 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="MarketCap: $ 142,471,173,190.00"
-        app:layout_constraintStart_toStartOf="@+id/coinName"
-        app:layout_constraintTop_toBottomOf="@+id/coinName" />
+        app:layout_constraintStart_toStartOf="@+id/coinPrice"
+        app:layout_constraintTop_toBottomOf="@+id/coinPrice" />
 
     <TextView
         android:id="@+id/volume24"
@@ -72,7 +72,8 @@
         android:text="1h -.22%"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/volume24"
-        app:layout_constraintTop_toBottomOf="@+id/volume24" />
+        app:layout_constraintTop_toBottomOf="@+id/volume24"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/change24"
@@ -84,7 +85,8 @@
         android:text="24h +1.31%"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/change1"
-        app:layout_constraintTop_toBottomOf="@+id/volume24" />
+        app:layout_constraintTop_toBottomOf="@+id/volume24"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/change7"
@@ -96,15 +98,25 @@
         android:text="7d -10.55%"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/change24"
-        app:layout_constraintTop_toBottomOf="@+id/volume24" />
+        app:layout_constraintTop_toBottomOf="@+id/volume24"
+        app:layout_constraintVertical_bias="0.0" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="113dp"
+        app:layout_constraintGuide_begin="152dp"
         app:layout_constraintTop_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/coinPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/coinName"
+        app:layout_constraintTop_toBottomOf="@+id/coinName" />
 
 </android.support.constraint.ConstraintLayout>
 
