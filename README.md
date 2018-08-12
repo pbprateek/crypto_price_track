@@ -15,4 +15,8 @@ This is the full code for 'crypto_price_track'.In this code we use Coinmarketcap
 </p>
 
 ## Video
-<iframe width="560" height="315" src="https://www.youtube.com/embed/i2D-BFastmw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<div align = 'center'>
+     <a href = 'https://www.youtube.com/watch?v=i2D-BFastmw'>
+        <img src = 'ScreenShots/photo_2018-08-12_20-47-28.jpg ' alt = 'Click to go to YouTube!' width = '800px' height = '400px'>
+     </a>
+</div>
