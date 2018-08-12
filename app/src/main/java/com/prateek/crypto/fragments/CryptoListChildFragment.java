@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -54,6 +55,7 @@ public class CryptoListChildFragment extends Fragment {
     private ArrayList<Coin> coinList;
     private FrameLayout root;
     private Toolbar toolbar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public CryptoListChildFragment(){
 
@@ -73,6 +75,7 @@ public class CryptoListChildFragment extends Fragment {
         coinList=new ArrayList<Coin>();
         setList();
         mProgressBar = view.findViewById(R.id.progress_bar_coins);
+        swipeRefreshLayout=view.findViewById(R.id.swipe_refresh);
         root = view.findViewById(R.id.main_view);
         toolbar = (Toolbar) getActivity().findViewById(R.id.my_toolbar);
         setHasOptionsMenu(true);
@@ -92,6 +95,13 @@ public class CryptoListChildFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         retrofit = NetworkClient.getClient().create(NetworkService.class);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                networkCall();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         if(CoinListSingleton.getInstance().getList().size()==0){
             networkCall();
         }
@@ -171,6 +181,7 @@ public class CryptoListChildFragment extends Fragment {
         private TextView change24Text;
         private TextView change7Text;
         private ToggleButton button;
+        private TextView priceText;
         private Coin mCoin;
         private Set<String> set;
 
@@ -184,10 +195,7 @@ public class CryptoListChildFragment extends Fragment {
             change1Text = itemView.findViewById(R.id.change1);
             change7Text=itemView.findViewById(R.id.change7);
             change24Text = itemView.findViewById(R.id.change24);
-
-
-
-
+            priceText=itemView.findViewById(R.id.coinPrice);
         }
 
         public void bind(Coin coin, int pos) {
@@ -200,6 +208,7 @@ public class CryptoListChildFragment extends Fragment {
             change1Text.setText("1h "+mCoin.getPercentChange1h());
             change24Text.setText("24h "+mCoin.getPercentChange24h());
             change7Text.setText("7d "+mCoin.getPercentChange7d());
+            priceText.setText("Price: $ "+mCoin.getPriceUsd());
             button.setTag(pos);
             if (set.contains(mCoin.getId())) {
                 button.setChecked(true);

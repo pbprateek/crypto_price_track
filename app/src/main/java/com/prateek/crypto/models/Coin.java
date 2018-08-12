@@ -19,7 +19,7 @@ public class Coin {
     private String rank;
     @SerializedName("price_usd")
     @Expose
-    private Object priceUsd;
+    private float priceUsd;
     @SerializedName("price_btc")
     @Expose
     private Object priceBtc;
@@ -87,7 +87,7 @@ public class Coin {
         return priceUsd;
     }
 
-    public void setPriceUsd(Object priceUsd) {
+    public void setPriceUsd(float priceUsd) {
         this.priceUsd = priceUsd;
     }
 
